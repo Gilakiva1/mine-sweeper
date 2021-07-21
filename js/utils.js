@@ -20,10 +20,13 @@ function renderMat(mat, selector) {
 // location such as: {i: 2, j: 7}
 function renderCell(location, value) {
   // Select the elCell and set the value
-  
+  if (gBoard[location.i][location.j].isMark) return
   var elCell = document.querySelector(`.cell${location.i}-${location.j}`);
+  if (value === BOMB) className = 'bomb';
+  else var className = `show${value}`
+  if (!value) value = '';
+  elCell.classList.add(className)
   elCell.innerHTML = value;
-  
 }
 
 function getRandomIntInclusive(min, max) {
@@ -36,7 +39,7 @@ function getRandomInteger(min, max) {
 }
 
 function blowUpNegs(cellI, cellJ, mines) {
-  
+
   var count = 0;
   for (var i = cellI - 1; i <= cellI + 1; i++) {
     if (i < 0 || i >= gLevel.size) continue
@@ -53,22 +56,19 @@ function blowUpNegs(cellI, cellJ, mines) {
   return count;
 }
 
-function showNegs(cellI, cellJ) {
-
-
-  
+function showNegs(cellI, cellJ, board) {
   for (var i = cellI - 1; i <= cellI + 1; i++) {
-    if (i < 0 || i >= gBoard.length) continue
+    if (i < 0 || i >= board.length) continue
     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-      if (j < 0 || j >= gBoard.length) continue
-      
-      if (!gBoard[i][j].isMine) {
-        gBoard[i][j].isShown = true;
+      if (j < 0 || j >= board.length) continue
+
+      if (!board[i][j].isMine && !board[i][j].isMarked) {
+        board[i][j].isShown = true;
 
         renderCell({
           i,
           j
-        },gBoard[i][j].minesAroundCount )
+        }, board[i][j].minesAroundCount)
       }
 
     }
