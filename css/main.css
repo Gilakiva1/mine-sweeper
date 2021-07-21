@@ -1,0 +1,34 @@
+body{
+    background-image: url(../img/back.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+table{
+    
+    text-align: center;
+    border: 1px solid black;
+    background-color: white;
+    margin: 0px 680px;
+}
+table td{
+    border: 1px solid black;
+    height: 30px;
+    width: 30px;
+}
+.board{
+    width: max-content;
+    
+    
+    
+}
+.life{
+    text-align: center;
+}
+
+.mark{
+    background-color: blue;
+}
+.smiley{
+    text-align: center;
+}

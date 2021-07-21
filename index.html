@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.4.js" 
+        type="text/javascript"></script>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body   onload="initGame()">
+    <h2 class="timer">00:00</h2>
+    
+    <input type="radio" name="choice" onclick="radioClick(4,2,1)" value="16" id="choice-16">
+    <label for="choice-16">16</label>
+    <input type="radio" name="choice" onclick="radioClick(8,12,2)" value="25" id="choice-25">
+    <label for="choice-25">25</label>
+    <input type="radio" name="choice" onclick="radioClick(12,30,3)" value="36" id="choice-36">
+    <label for="choice-36">36</label>
+    <h1 class="life"> life = 1</h1>
+    <h1 onclick="restartGame()" class="smiley"></h1>
+    <div  class="board">
+        
+
+
+    </div>
+<script src="./js/utils.js"></script>
+<script src="./js/main.js"></script>    
+</body>
+</html>
