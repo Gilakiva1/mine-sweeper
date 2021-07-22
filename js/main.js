@@ -69,7 +69,8 @@ function restartGame() {
     gGame.isOn = false;
     gSafeClick = 3;
     gLevel.life = tmpLife
-    
+    var elLabel = document.querySelector('.safe-label');
+            elLabel.innerText = `3 click left`;
     gGame = {
         isOn: true,
         shownCount: 0,
@@ -238,7 +239,7 @@ function checkVictory() {
 
 function checkLoss() {
     if (!gLevel.life) {
-        clearTimer();
+        clearTimer()
         showHiddenBombs();
         gGame.isOn = false;
 

@@ -27,15 +27,22 @@ function renderCell(location, value, isSafe) {
     if (value === BOMB) className = 'bomb';
     else var className = `show${value}`
   } else {
-    if (value !== ' ') className = 'safe';
-    else elCell.classList.remove('safe')
+    if (value !== ' ') {
+      className = 'safe';
+      if (!gBoard[location.i][location.j].isMine && gBoard[location.i][location.j].minesAroundCount) {
+        value = gBoard[location.i][location.j].minesAroundCount;
+        console.log('!!!!!!');
+
+      }
+    } else elCell.classList.remove('safe');
+
+
 
   }
-  
-  if(!gBoard[location.i][location.j].isMine&&gBoard[location.i][location.j].minesAroundCount){
-    value = gBoard[location.i][location.j].minesAroundCount;
-  }
+
+
   if (!value) value = '';
+
   elCell.classList.add(className)
   elCell.innerHTML = value;
 }
