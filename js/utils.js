@@ -4,11 +4,8 @@ function renderMat(mat, selector) {
     strHTML += '<tr>';
     for (var j = 0; j < mat.length; j++) {
       var cell = '';
-      // var className = `cell`;
       var className = 'cell cell' + i + '-' + j;
-      // strHTML += `<td class="${className}>${cell}</td>`;
-      strHTML += `<td oncontextmenu="markCell(this, ${i}, ${j})" onclick="cellClicked(this, ${i}, ${j})" class="${className}">${cell}</td>`;
-      // strHTML += '<td onclick="cellClicked(this, ${i}, ${j}) " class="' + className + '"> ' + cell + ' </td>'
+      strHTML += `<td oncontextmenu="markCell(this, ${i}, ${j})" onclick="cellClicked( ${i}, ${j})" class="${className}">${cell}</td>`;
     }
     strHTML += '</tr>'
   }
@@ -17,10 +14,8 @@ function renderMat(mat, selector) {
   elContainer.innerHTML = strHTML;
 }
 
-// location such as: {i: 2, j: 7}
 function renderCell(location, value, isSafe) {
   // Select the elCell and set the value
-
   var elCell = document.querySelector(`.cell${location.i}-${location.j}`);
   if (!isSafe) {
     if (gBoard[location.i][location.j].isMark) return
@@ -31,18 +26,10 @@ function renderCell(location, value, isSafe) {
       className = 'safe';
       if (!gBoard[location.i][location.j].isMine && gBoard[location.i][location.j].minesAroundCount) {
         value = gBoard[location.i][location.j].minesAroundCount;
-        console.log('!!!!!!');
-
       }
     } else elCell.classList.remove('safe');
-
-
-
   }
-
-
   if (!value) value = '';
-
   elCell.classList.add(className)
   elCell.innerHTML = value;
 }

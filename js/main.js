@@ -32,7 +32,7 @@ var tmpLife = gLevel.life;
 var gIsWork = false;
 
 function initGame() {
-    
+
     gGame.isOn = false;
     gSafeClick = 3;
     gBoard = buildBoard();
@@ -70,7 +70,7 @@ function restartGame() {
     gSafeClick = 3;
     gLevel.life = tmpLife
     var elLabel = document.querySelector('.safe-label');
-            elLabel.innerText = `3 click left`;
+    elLabel.innerText = `3 click left`;
     gGame = {
         isOn: true,
         shownCount: 0,
@@ -114,12 +114,13 @@ function getRandomPositionForBomb(mineSize, cellI, cellJ) {
         }
         if (idxI === cellI && idxJ === cellJ) i--;
         else {
-            mines.push({
+            mines[i] = {
                 i: idxI,
                 j: idxJ
-            });
+            };
         }
     }
+    console.log(mines);
     return mines;
 }
 
@@ -141,7 +142,7 @@ function setMinesNegsCount(cellI, cellJ, mines) {
 function markCell(elCell, i, j) {
     document.addEventListener('contextmenu', event => event.preventDefault());
     if (gGame.isOn) {
-        if (sizeFlag && !gBoard[i][j].isMarked && !elCell.innerText) {
+        if (sizeFlag && !gBoard[i][j].isMarked && !elCell.innerText && !gBoard[i][j].isShown) {
 
             elCell.classList.add(`mark`);
             elCell.innerText = FLAG;
@@ -157,20 +158,25 @@ function markCell(elCell, i, j) {
     checkVictory()
 }
 
-function cellClicked(elCell, idxI, idxJ) {
-    if (gGame.isOn || gIsFirst) {
+function checkFirstClick(idxI, idxJ) {
+    gGame.isOn = true;
+    gTimer = Date.now();
+    gStartInterval = setInterval(activateTimer, 500)
+    var mines = getRandomPositionForBomb(gLevel.mines, idxI, idxJ);
+    setBombOnBoard(idxI, idxJ, mines);
+    setMinesNegsCount(idxI, idxJ, mines);
+    gIsFirst = false;
+}
+
+function cellClicked(idxI, idxJ) {
+    if ((gGame.isOn || gIsFirst) && !gIsWork) {
         if (!gBoard[idxI][idxJ].isShown && !gBoard[idxI][idxJ].isMarked) {
             if (gIsFirst) {
-                gGame.isOn = true;
-                gTimer = Date.now();
-                gStartInterval = setInterval(activateTimer, 500)
-                var mines = getRandomPositionForBomb(gLevel.mines, idxI, idxJ);
-                setBombOnBoard(idxI, idxJ, mines);
-                setMinesNegsCount(idxI, idxJ, mines);
-                gIsFirst = false;
+                checkFirstClick(idxI, idxJ);
             }
-            if (!gBoard[idxI][idxJ].minesAroundCount && !gBoard[idxI][idxJ].isMine) showNegs(idxI, idxJ, gBoard, false)
-            else if (gBoard[idxI][idxJ].minesAroundCount && !gBoard[idxI][idxJ].isMine) {
+            if (!gBoard[idxI][idxJ].minesAroundCount && !gBoard[idxI][idxJ].isMine) {
+                showNegs(idxI, idxJ, gBoard, false);
+            } else if (gBoard[idxI][idxJ].minesAroundCount && !gBoard[idxI][idxJ].isMine) {
                 renderCell({
                     i: idxI,
                     j: idxJ
@@ -226,12 +232,15 @@ function checkVictory() {
     if (isAllShown()) {
         renderSmiley(gSmiley.win);
         gGame.isOn = false;
-        var thisTime = localStorage.getItem(gLevel.level);
+        var thisTime = localStorage.getItem('easy');
+        // gGame.secsPassed = thisTime
+        console.log({thisTime},'-',gLevel.bestTime);
         if (!gLevel.bestTime) {
             gLevel.bestTime = thisTime;
-        } else if (thisTime < gLevel.bestTime) {
+        } else if (thisTime > gLevel.bestTime) {
             gLevel.bestTime = thisTime;
         }
+        console.log(gGame.secsPassed);
         clearInterval(gStartInterval)
     }
     checkLoss();
@@ -242,7 +251,6 @@ function checkLoss() {
         clearTimer()
         showHiddenBombs();
         gGame.isOn = false;
-
     }
 }
 
@@ -260,7 +268,7 @@ function showHiddenBombs() {
 
 }
 
-function checkAllCellIsSown() {
+function checkAllCellIsShown() {
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
             if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
@@ -273,7 +281,6 @@ function checkAllCellIsSown() {
 
 function safeClick() {
     if (gGame.isOn && !gIsWork) {
-
         if (!gSafeClick) return;
         var randI = getRandomInteger(0, gBoard.length);
         var randJ = getRandomInteger(0, gBoard.length);
@@ -317,7 +324,8 @@ function renderBestScore() {
     // easy.document.innerText = `Easy (4 * 4) Score:${gLevel.secsPassed}`
     easy.innerText = 'Easy (4 * 4) Score:' + gLevel.secsPassed;
 }
-function clearTimer(){
+
+function clearTimer() {
     clearInterval(gStartInterval)
     document.querySelector('.timer').innerText = '00:00';
 }
