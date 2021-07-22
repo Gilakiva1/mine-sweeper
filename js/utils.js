@@ -18,12 +18,23 @@ function renderMat(mat, selector) {
 }
 
 // location such as: {i: 2, j: 7}
-function renderCell(location, value) {
+function renderCell(location, value, isSafe) {
   // Select the elCell and set the value
-  if (gBoard[location.i][location.j].isMark) return
+
   var elCell = document.querySelector(`.cell${location.i}-${location.j}`);
-  if (value === BOMB) className = 'bomb';
-  else var className = `show${value}`
+  if (!isSafe) {
+    if (gBoard[location.i][location.j].isMark) return
+    if (value === BOMB) className = 'bomb';
+    else var className = `show${value}`
+  } else {
+    if (value !== ' ') className = 'safe';
+    else elCell.classList.remove('safe')
+
+  }
+  
+  if(!gBoard[location.i][location.j].isMine&&gBoard[location.i][location.j].minesAroundCount){
+    value = gBoard[location.i][location.j].minesAroundCount;
+  }
   if (!value) value = '';
   elCell.classList.add(className)
   elCell.innerHTML = value;
@@ -56,7 +67,7 @@ function blowUpNegs(cellI, cellJ, mines) {
   return count;
 }
 
-function showNegs(cellI, cellJ, board) {
+function showNegs(cellI, cellJ, board, isSafe) {
   for (var i = cellI - 1; i <= cellI + 1; i++) {
     if (i < 0 || i >= board.length) continue
     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
@@ -68,7 +79,7 @@ function showNegs(cellI, cellJ, board) {
         renderCell({
           i,
           j
-        }, board[i][j].minesAroundCount)
+        }, board[i][j].minesAroundCount, isSafe)
       }
 
     }

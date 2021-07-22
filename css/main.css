@@ -1,8 +1,10 @@
 body{
+    
     background-image: url(../img/back.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
+    font-family: cursive;
 }
 table{
     border: 1px solid black;
@@ -12,14 +14,17 @@ table{
 }
 table td{
     border: 1px solid black;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     border-radius: 5px;
     background-color: #caf0f8;
 }
 .board{
+    
     width: max-content;
     margin: 0 auto;
+    cursor: pointer;
+display: inline-block;
 }
 .mark{
     background-color: #e9c46a;
@@ -30,23 +35,57 @@ table td{
 .show0{
     background-color: #90e0ef;
 }
-.show1 {
-    color: green;
+td[class*="show"]{
     background-color: #90e0ef;
     font-weight: bold;
+    font-size: 25px;
+
+}
+.show1 {
+    color: green;
+    
 }
 .show2{
     color: orange;
-    background-color: #90e0ef;
-    font-weight: bold;
+   
 
 }
 .show3{
-    color: yellow;
-    background-color: #90e0ef;
-    font-weight: bold;
-    font-size: 20px;
+    color: rgb(94, 33, 102);
+} 
 
+.safe{
+    font-weight: bold;
+    font-size: 25px;
+    background-color: #52b788;
+}
+
+.smiley{
+    cursor: pointer;
+    display: block;
+    visibility:visible
+    
+}
+.safe-btn{
+    display: block;
+    margin: 30px auto 10px;
+    width: 130px;
+    height: 35px;
+    font-family: cursive;
+    font-size: 20px;
+    background-color: #0077b6;
+    color: white;
+    border-radius: 8px;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.safe-btn:hover{
+    width: 150px;
+}
+.safe-label{
+    color: white;
 }
 
 
